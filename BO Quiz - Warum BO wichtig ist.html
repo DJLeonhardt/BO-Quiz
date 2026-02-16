@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Quiz: Berufsorientierung</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f8ff;
+  max-width: 800px;
+  margin: auto;
+  padding: 15px;
+}
+h1 {text-align:center; color:#003366;}
+.frage {
+  background: white;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+label {
+  display:block;
+  background:#eef4ff;
+  padding:8px;
+  margin:6px 0;
+  border-radius:8px;
+}
+button {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  background:#0059b3;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-size:1rem;
+}
+.feedback {margin-top:8px; font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+<h1>Quiz: Berufsorientierung</h1>
+<div id="quiz"></div>
+<h2 id="ergebnis"></h2>
+
+<script>
+let score = 0;
+let answered = [];
+
+const questions = [
+
+{q:"Warum ist es wichtig, sich früh mit der beruflichen Zukunft zu beschäftigen?",
+a:["Weil Schule egal ist","Weil Entscheidungen später egal sind","Weil Schulentscheidungen Einfluss auf das Leben haben","Weil alle es müssen"],
+r:2,e:"Entscheidungen in der Schule beeinflussen das spätere Leben."},
+
+{q:"Was bedeutet der wirtschaftliche Aspekt?",
+a:["Freizeit","Geld verdienen und selbstständig leben","Spaß haben","Arbeit vermeiden"],
+r:1,e:"Arbeit sorgt für Einkommen und Sicherheit."},
+
+{q:"Was kann ohne Abschluss oder Plan passieren?",
+a:["Man findet immer leicht Arbeit","Man hat oft Geldprobleme","Man wird automatisch reich","Man bekommt mehr Freizeit"],
+r:1,e:"Ohne Plan ist es schwer, eine feste Arbeit zu finden."},
+
+{q:"Warum ist Arbeit persönlich wichtig?",
+a:["Sie macht immer müde","Sie gibt Selbstvertrauen und Zufriedenheit","Sie ist nur Pflicht","Sie ist unwichtig"],
+r:1,e:"Passende Arbeit kann zufrieden machen."},
+
+{q:"Wie viel Zeit nimmt Arbeit im Leben ein?",
+a:["Sehr wenig","Gar keine","Einen großen Teil","Nur in der Schule"],
+r:2,e:"Arbeit nimmt einen großen Teil des Lebens ein."},
+
+{q:"Warum ist Arbeit wichtig für die Gesellschaft?",
+a:["Damit niemand helfen muss","Damit alles funktioniert","Damit man allein bleibt","Damit es keine Regeln gibt"],
+r:1,e:"Ohne Arbeit würde Gesellschaft nicht funktionieren."},
+
+{q:"Was machen arbeitende Menschen für andere?",
+a:["Nichts","Sie tragen zur Versorgung und Hilfe bei","Sie stören","Sie arbeiten nur für sich"],
+r:1,e:"Viele Berufe helfen anderen Menschen."},
+
+{q:"Warum ist Berufsorientierung wichtig für die Zukunft?",
+a:["Berufe bleiben immer gleich","Neue Berufe entstehen","Zukunft ist egal","Man muss nichts lernen"],
+r:1,e:"Die Arbeitswelt verändert sich ständig."},
+
+{q:"Was hilft, mit Veränderungen umzugehen?",
+a:["Ignorieren","Abwarten","Informieren und vorbereiten","Nicht lernen"],
+r:2,e:"Vorbereitung hilft bei Veränderungen."},
+
+{q:"Was bedeutet Berufsorientierung insgesamt?",
+a:["Zwang","Zeitverschwendung","Verantwortung für das eigene Leben","Nur Arbeit suchen"],
+r:2,e:"Es geht um Verantwortung für die eigene Zukunft."}
+
+];
+
+const quiz = document.getElementById("quiz");
+
+questions.forEach((f,i)=>{
+  const d=document.createElement("div");
+  d.className="frage";
+  d.innerHTML=`<p><b>${i+1}. ${f.q}</b></p>`;
+  f.a.forEach((x,j)=>{
+    d.innerHTML+=`<label><input type="radio" name="q${i}" value="${j}"> ${x}</label>`;
+  });
+  d.innerHTML+=`<button onclick="check(${i})">Antwort prüfen</button>
+                <div class="feedback" id="f${i}"></div>`;
+  quiz.appendChild(d);
+});
+
+function check(i){
+  if(answered[i]) return;
+  const sel=document.querySelector(`input[name="q${i}"]:checked`);
+  if(!sel) return alert("Bitte eine Antwort auswählen.");
+  const ok=Number(sel.value)===questions[i].r;
+  document.getElementById("f"+i).innerText=
+    ok?"✔ Richtig: "+questions[i].e:"✘ Falsch: "+questions[i].e;
+  if(ok) score++;
+  answered[i]=true;
+  document.getElementById("ergebnis").innerText=
+    `Punkte: ${score}/${questions.length}`;
+}
+</script>
+
+</body>
+</html>
